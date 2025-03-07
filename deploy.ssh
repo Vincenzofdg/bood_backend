@@ -1,0 +1,21 @@
+#!/bin/bash
+
+mvn clean package
+
+PID=$(lsof -t -i:3001)
+
+if [ -n "$PID" ]; then
+    echo "Killing application on port 3001 (PID: $PID)"
+    kill -9 $PID
+else
+    echo "No application running on port 3001"
+fi
+
+JAR_FILE=$(ls target/olhaaquicondominio-*.jar | head -n 1)
+
+if [ -n "$JAR_FILE" ]; then
+    nohup java -jar "$JAR_FILE" > output.log 2>&1 &
+    echo "Application started with $JAR_FILE"
+else
+    echo "No JAR file found"
+fi
