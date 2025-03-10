@@ -1,27 +1,22 @@
 package com.br.bood.boodApi.entities;
 
 import com.br.bood.boodApi.records.EstablishmentRecord;
-
+import com.br.bood.boodApi.tools.FormatDocument;
 import com.br.bood.boodApi.tools.IdGenerator;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.util.Objects;
+import com.br.bood.boodApi.tools.FormatPhone;
+import com.br.bood.boodApi.tools.FormatDocument;
 
 @Entity
 @Table(name = "establishments")
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(of = "id")
 public class EstablishmentEntity {
 
     @Id
-    @Column(nullable = false, updatable = false, unique = true, length = 20)
+    @Column(nullable = false, updatable = false, unique = true, length = 50)
     private String id;
 
     @Column(nullable = false, length = 255)
@@ -36,11 +31,11 @@ public class EstablishmentEntity {
     @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String description;
 
-    @Column(nullable = false)
-    private Integer phone;
+    @Column(nullable = false, unique = true, length = 100)
+    private String phone;
 
-    @Column(nullable = false)
-    private Integer document;
+    @Column(nullable = false, unique = true, length = 100)
+    private String document;
 
     @Column(nullable = false)
     private Float rate;
@@ -57,6 +52,8 @@ public class EstablishmentEntity {
     @UpdateTimestamp
     private LocalDateTime updated_at;
 
+    public EstablishmentEntity() {}
+
     public EstablishmentEntity(EstablishmentRecord payload) {
         this.id = IdGenerator.generate();
         this.name = payload.name();
@@ -68,5 +65,54 @@ public class EstablishmentEntity {
         this.rate = payload.rate();
         this.status = payload.status() != null ? payload.status() : false;
         this.preview_url = payload.preview_url();
+    }
+
+    // Getters
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public String getEmail() { return email; }
+    public String getTags() { return tags; }
+    public String getDescription() { return description; }
+    public String getPhone() { return phone; }
+    public String getDocument() { return document; }
+    public Float getRate() { return rate; }
+    public Boolean getStatus() { return status; }
+    public String getPreview_url() { return preview_url; }
+    public LocalDateTime getCreated_at() { return created_at; }
+    public LocalDateTime getUpdated_at() { return updated_at; }
+
+    public void setName(String name) { this.name = name; }
+    public void setEmail(String email) { this.email = email; }
+    public void setTags(String tags) { this.tags = tags; }
+    public void setDescription(String description) { this.description = description; }
+    public void setPhone(String phone) {
+        this.phone = FormatPhone.format(phone);;
+    }
+    public void setDocument(String document) {
+        String formatedDocument;
+
+        if (document.length() > 5) {
+            formatedDocument = FormatDocument.cnpj(document);
+        } else {
+            formatedDocument = FormatDocument.alvara(document);
+        }
+
+        this.document = formatedDocument;
+    }
+    public void setRate(Float rate) { this.rate = rate; }
+    public void setStatus(Boolean status) { this.status = status; }
+    public void setPreview_url(String preview_url) { this.preview_url = preview_url; }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        EstablishmentEntity that = (EstablishmentEntity) obj;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
