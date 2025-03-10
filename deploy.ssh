@@ -11,7 +11,7 @@ else
     echo "No application running on port 3001"
 fi
 
-JAR_FILE=$(ls target/olhaaquicondominio-*.jar | head -n 1)
+JAR_FILE=$(ls target/boodApi-*.jar | head -n 1)
 
 if [ -n "$JAR_FILE" ]; then
     nohup java -jar "$JAR_FILE" > output.log 2>&1 &
