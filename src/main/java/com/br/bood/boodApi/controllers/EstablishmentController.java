@@ -93,9 +93,6 @@ public class EstablishmentController {
         return ResponseEntity.ok(existingEntity);
     }
 
-
-
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteEstablishment(@PathVariable String id) {
         if (!repository.existsById(id)) {
