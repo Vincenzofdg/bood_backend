@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git pull
+
 mvn clean package
 
 PID=$(lsof -t -i:3001)
