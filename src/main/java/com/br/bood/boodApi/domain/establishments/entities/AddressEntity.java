@@ -2,6 +2,8 @@ package com.br.bood.boodApi.domain.establishments.entities;
 
 import com.br.bood.boodApi.domain.establishments.records.AddressRecord;
 import com.br.bood.boodApi.shared.tools.IdGenerator;
+import com.br.bood.boodApi.shared.tools.StringFormater;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -19,6 +21,7 @@ public class AddressEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "establishment_id", nullable = false)
+    @JsonBackReference
     private MainEntity establishment;
 
     @Column(nullable = false, length = 100)
@@ -71,7 +74,7 @@ public class AddressEntity {
     public void setNeighborhood(String neighborhood) { this.neighborhood = neighborhood; }
     public void setNumber(Integer number) { this.number = number; }
     public void setCity(String city) { this.city = city; }
-    public void setZipCode(String zipCode) { this.zipCode = zipCode; }
+    public void setZipCode(String zipCode) { this.zipCode = StringFormater.zipCode(zipCode); }
 
     @Override
     public boolean equals(Object obj) {

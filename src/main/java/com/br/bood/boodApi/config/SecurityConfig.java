@@ -15,6 +15,10 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET,"/establishments/**").permitAll()
+
+                        .requestMatchers(HttpMethod.PUT,"/establishments/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/establishments/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE,"/establishments/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable);

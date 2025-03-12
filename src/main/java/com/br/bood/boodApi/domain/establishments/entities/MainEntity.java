@@ -1,18 +1,15 @@
 package com.br.bood.boodApi.domain.establishments.entities;
 
 import com.br.bood.boodApi.domain.establishments.records.MainRecord;
-import com.br.bood.boodApi.shared.tools.FormatDocument;
-import com.br.bood.boodApi.shared.tools.FormatPhone;
+import com.br.bood.boodApi.shared.tools.StringFormater;
 import com.br.bood.boodApi.shared.tools.IdGenerator;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+//import java.util.List;
 
 @Entity
 @Table(name = "establishments")
@@ -46,14 +43,17 @@ public class MainEntity {
     private Boolean status;
 
     @Column(nullable = false, length = 255)
-    private String preview_url;
+    private String previewUrl;
+
+//    @OneToMany(mappedBy = "establishment", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<MainEntity> establishment;
 
     @CreationTimestamp
     @Column(updatable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 
     public MainEntity() {}
 
@@ -67,7 +67,7 @@ public class MainEntity {
         this.document = payload.document();
         this.rate = payload.rate();
         this.status = payload.status() != null ? payload.status() : false;
-        this.preview_url = payload.preview_url();
+        this.previewUrl = payload.previewUrl();
     }
 
     // Getters
@@ -80,9 +80,9 @@ public class MainEntity {
     public String getDocument() { return document; }
     public Float getRate() { return rate; }
     public Boolean getStatus() { return status; }
-    public String getPreview_url() { return preview_url; }
-    public LocalDateTime getCreated_at() { return created_at; }
-    public LocalDateTime getUpdated_at() { return updated_at; }
+    public String getPreviewUrl() { return previewUrl; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
 
     // Setters
     public void setName(String name) { this.name = name; }
@@ -90,22 +90,22 @@ public class MainEntity {
     public void setTags(String tags) { this.tags = tags; }
     public void setDescription(String description) { this.description = description; }
     public void setPhone(String phone) {
-        this.phone = FormatPhone.format(phone);;
+        this.phone = StringFormater.phone(phone);
     }
     public void setDocument(String document) {
         String formatedDocument;
 
         if (document.length() > 5) {
-            formatedDocument = FormatDocument.cnpj(document);
+            formatedDocument = StringFormater.cnpj(document);
         } else {
-            formatedDocument = FormatDocument.alvara(document);
+            formatedDocument = StringFormater.alvara(document);
         }
 
         this.document = formatedDocument;
     }
     public void setRate(Float rate) { this.rate = rate; }
     public void setStatus(Boolean status) { this.status = status; }
-    public void setPreview_url(String preview_url) { this.preview_url = preview_url; }
+    public void setPreviewUrl(String previewUrl) { this.previewUrl = previewUrl; }
 
     @Override
     public boolean equals(Object obj) {

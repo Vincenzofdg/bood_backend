@@ -84,7 +84,7 @@ public class MainController {
                     existingEntity.setStatus(Boolean.valueOf((String) value));
                     break;
                 case "preview_url":
-                    existingEntity.setPreview_url((String) value);
+                    existingEntity.setPreviewUrl((String) value);
                     break;
             }
         });
