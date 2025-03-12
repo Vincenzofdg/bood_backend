@@ -40,6 +40,40 @@ public class AddressController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PutMapping("/{establishmentId}")
+    public ResponseEntity<?> updateAddress(@PathVariable String establishmentId, @RequestBody Map<String, Object> payload) {
+        Optional<AddressEntity> target = repository.findByEstablishment_Id(establishmentId);
+
+        if (target.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Address Found");
+        }
+
+        AddressEntity targetEntity = target.get();
+
+        payload.forEach((key, value) -> {
+            switch (key) {
+                case "street":
+                    targetEntity.setStreet((String) value);
+                    break;
+                case "neighborhood":
+                    targetEntity.setNeighborhood((String) value);
+                    break;
+                case "number":
+                    targetEntity.setNumber((Integer) value);
+                    break;
+                case "city":
+                    targetEntity.setCity((String) value);
+                    break;
+                case "ziCode":
+                    targetEntity.setZipCode((String) value);
+                    break;
+            }
+        });
+
+        repository.save(targetEntity);
+        return ResponseEntity.ok(targetEntity);
+    }
+
     @Transactional
     @PostMapping("/{establishmentId}")
     public ResponseEntity<?> createAddress(@PathVariable String establishmentId, @RequestBody AddressRecord payload) {
