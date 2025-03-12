@@ -1,4 +1,4 @@
-package com.br.bood.boodApi.tools;
+package com.br.bood.boodApi.shared.tools;
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;

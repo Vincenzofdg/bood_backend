@@ -1,4 +1,4 @@
-package com.br.bood.boodApi.tools;
+package com.br.bood.boodApi.shared.tools;
 
 public class FormatDocument {
     public static String alvara(String doc) {

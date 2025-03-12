@@ -1,8 +1,8 @@
-package com.br.bood.boodApi.controllers;
+package com.br.bood.boodApi.domain.establishments.controllers;
 
-import com.br.bood.boodApi.entities.EstablishmentEntity;
-import com.br.bood.boodApi.records.EstablishmentRecord;
-import com.br.bood.boodApi.repositories.EstablishmentRepository;
+import com.br.bood.boodApi.domain.establishments.entities.MainEntity;
+import com.br.bood.boodApi.domain.establishments.records.MainRecord;
+import com.br.bood.boodApi.domain.establishments.repositories.MainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -15,29 +15,29 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/establishments")
-public class EstablishmentController {
+public class MainController {
 
     @Autowired
-    private EstablishmentRepository repository;
+    private MainRepository repository;
 
     @GetMapping
-    public ResponseEntity<List<EstablishmentEntity>> getAllEstablishments() {
-        List<EstablishmentEntity> result = repository.findAll();
+    public ResponseEntity<List<MainEntity>> getAllEstablishments() {
+        List<MainEntity> result = repository.findAll();
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EstablishmentEntity> getEstablishmentById(@PathVariable String id) {
-        Optional<EstablishmentEntity> result = repository.findById(id);
+    public ResponseEntity<MainEntity> getEstablishmentById(@PathVariable String id) {
+        Optional<MainEntity> result = repository.findById(id);
         return result
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<?> createEstablishment(@RequestBody EstablishmentRecord payload) {
+    public ResponseEntity<?> createEstablishment(@RequestBody MainRecord payload) {
         try {
-            EstablishmentEntity newObjOnDB = new EstablishmentEntity(payload);
+            MainEntity newObjOnDB = new MainEntity(payload);
             repository.save(newObjOnDB);
             return ResponseEntity.status(HttpStatus.CREATED).body(newObjOnDB);
         } catch (DataIntegrityViolationException err) {
@@ -49,13 +49,13 @@ public class EstablishmentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEstablishment(@PathVariable String id, @RequestBody Map<String, Object> payload) {
-        Optional<EstablishmentEntity> establishmentFromDB = repository.findById(id);
+        Optional<MainEntity> establishmentFromDB = repository.findById(id);
 
         if (establishmentFromDB.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erro: Estabelecimento não encontrado.");
         }
 
-        EstablishmentEntity existingEntity = establishmentFromDB.get();
+        MainEntity existingEntity = establishmentFromDB.get();
 
         payload.forEach((key, value) -> {
             switch (key) {

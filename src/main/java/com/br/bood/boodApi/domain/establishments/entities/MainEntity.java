@@ -1,19 +1,22 @@
-package com.br.bood.boodApi.entities;
+package com.br.bood.boodApi.domain.establishments.entities;
 
-import com.br.bood.boodApi.records.EstablishmentRecord;
-import com.br.bood.boodApi.tools.FormatDocument;
-import com.br.bood.boodApi.tools.IdGenerator;
+import com.br.bood.boodApi.domain.establishments.records.MainRecord;
+import com.br.bood.boodApi.shared.tools.FormatDocument;
+import com.br.bood.boodApi.shared.tools.FormatPhone;
+import com.br.bood.boodApi.shared.tools.IdGenerator;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
-import com.br.bood.boodApi.tools.FormatPhone;
-import com.br.bood.boodApi.tools.FormatDocument;
 
 @Entity
 @Table(name = "establishments")
-public class EstablishmentEntity {
+public class MainEntity {
 
     @Id
     @Column(nullable = false, updatable = false, unique = true, length = 50)
@@ -52,9 +55,9 @@ public class EstablishmentEntity {
     @UpdateTimestamp
     private LocalDateTime updated_at;
 
-    public EstablishmentEntity() {}
+    public MainEntity() {}
 
-    public EstablishmentEntity(EstablishmentRecord payload) {
+    public MainEntity(MainRecord payload) {
         this.id = IdGenerator.generate();
         this.name = payload.name();
         this.email = payload.email();
@@ -107,7 +110,7 @@ public class EstablishmentEntity {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        EstablishmentEntity that = (EstablishmentEntity) obj;
+        MainEntity that = (MainEntity) obj;
         return Objects.equals(id, that.id);
     }
 
