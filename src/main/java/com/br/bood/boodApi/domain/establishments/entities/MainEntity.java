@@ -84,6 +84,7 @@ public class MainEntity {
     public LocalDateTime getCreated_at() { return created_at; }
     public LocalDateTime getUpdated_at() { return updated_at; }
 
+    // Setters
     public void setName(String name) { this.name = name; }
     public void setEmail(String email) { this.email = email; }
     public void setTags(String tags) { this.tags = tags; }
